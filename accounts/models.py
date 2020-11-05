@@ -79,6 +79,7 @@ class users(AbstractBaseUser):
     image         = models.ImageField(default="users/logo.png",upload_to=imagesave, height_field=None, width_field=None)
     joined_at     = models.DateField(auto_now_add=True,verbose_name="joined at")
     slug          = models.SlugField(blank=True,null=True)
+    is_active     = models.BooleanField(default=True)
     is_admin      = models.BooleanField(default=False)
     is_staff      = models.BooleanField(default=False)
     is_superuser  = models.BooleanField(default=False)
@@ -119,6 +120,7 @@ class Category(models.Model):
 
 class doctor(models.Model):
     user     = models.OneToOneField(users,on_delete=models.CASCADE)
+    age      = models.IntegerField()
     bio      = models.CharField(max_length = 150)
     quali    = models.TextField(max_length = 400)
     bill     = models.IntegerField()
@@ -134,11 +136,28 @@ class doctor(models.Model):
     
     def __str__(self):
         return self.bio
-    
+
+
+
+
+
+class patient(models.Model):
+    user            = models.OneToOneField(users,on_delete=models.CASCADE)
+    age             = models.IntegerField()
     
 
-class Disease(models.Model):
     
+
+    def __str__(self):
+        return self.age
+
+    
+
+
+
+class Disease(models.Model):
+
+    patient        = models.ForeignKey(patient, on_delete=models.CASCADE)
     disease_name   = models.CharField( max_length=50,verbose_name="disease name")
     when_come      = models.DateTimeField(auto_now=False, auto_now_add=False,verbose_name="when you get this disease")
     is_gone        = models.BooleanField()
@@ -158,24 +177,15 @@ class FamilyDisease(models.Model):
         ("grand father" ,   "Grand father"),
         ("grand mother" ,   "Grand mother"),
     )
-
-    relative = models.CharField(max_length=50, choices=relatives,verbose_name="Relative Position")
-    disease  = models.ForeignKey(Disease, on_delete=models.CASCADE)
+    family_patient  = models.ForeignKey(patient, on_delete=models.CASCADE)
+    relative_name   = models.CharField(max_length=50, choices=relatives,verbose_name="Relative Position")
+    disease_name    = models.CharField( max_length=50,verbose_name="disease name")
+    when_come       = models.DateTimeField(auto_now=False, auto_now_add=False,verbose_name="when you get this disease")
+    is_gone         = models.BooleanField()
+    side_effects    = models.TextField(max_length=1000 , verbose_name="Side Effects")
     
     def __str__(self):
-        return self.relative
+        return self.relative_name
 
 
 
-
-class patient(models.Model):
-
-    age             = models.IntegerField()
-    disease         = models.ForeignKey(Disease, on_delete=models.CASCADE)
-    family_disease  = models.ForeignKey(FamilyDisease, verbose_name="Family Disease", on_delete=models.CASCADE)
-    
-
-    
-
-    def __str__(self):
-        return self.age

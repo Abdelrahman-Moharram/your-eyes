@@ -1,1 +1,28 @@
-register Page
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+
+{% block title %}
+    Register
+{% endblock title %}
+
+
+{% block body %}
+    <div class="alert alert-primary">
+
+        <form>
+            {% csrf_token %}
+
+            <div class="form-group">
+                {{  form     | crispy }}
+                {{  d_form   | crispy }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            
+          </form>
+    </div>
+  
+
+{% endblock body %}
