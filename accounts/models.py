@@ -125,8 +125,8 @@ class doctor(models.Model):
     quali    = models.TextField(max_length = 400)
     bill     = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    start    = models.DateTimeField(auto_now=False, auto_now_add=False)
-    end      = models.DateTimeField(auto_now=False, auto_now_add=False)
+    start    = models.DateTimeField(auto_now=False, auto_now_add=True)
+    end      = models.DateTimeField(auto_now=False, auto_now_add=True)
 
 
     

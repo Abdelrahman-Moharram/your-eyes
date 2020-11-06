@@ -9,20 +9,25 @@
 
 
 {% block body %}
-    <div class="alert alert-primary">
 
-        <form>
+
+
+<div class="container">
+    <div class="container-info">
+
+        <form method="POST">
             {% csrf_token %}
 
             <div class="form-group">
                 {{  form     | crispy }}
                 {{  d_form   | crispy }}
+                
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
 
             
           </form>
     </div>
-  
+</div>  
 
 {% endblock body %}
